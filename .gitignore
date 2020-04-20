@@ -1,5 +1,4 @@
 .vscode/
 .git/
 *.java
-out*.bmp
 .DS_Store
