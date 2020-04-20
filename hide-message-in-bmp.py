@@ -26,17 +26,29 @@ def encode(bmp_in, message, bmp_out):
 
 
 
-            
-   
-
-  
-
 def decode(bmp_in, txt_out):
-    return
+    with open(bmp_in, "rb") as bmp_in:
+        for i in range(HEADSIZE): # skip header
+            bmp_in.read(1)
+        msg_done = False
+        with open(txt_out, "wb") as txt_out:
+            while msg_done != True:
+                c_bytes = bmp_in.read(8)
+                char = 0x00
+                for b in c_bytes:
+                    char = (char << 1) | (b & 0x01)
+                if char == 0x00:
+                    msg_done = True
+                    continue
+                txt_out.write(bytes([char]))
+        
+        
+    
 
 
 
 encode("picture1.bmp", "message.txt", "out0.bmp")
+decode("out0.bmp", "out.txt")
  
 
 
