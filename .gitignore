@@ -1,3 +1,5 @@
-./.vscode/
-./.git/
-./HideMsgInPicture_decode_missing.java
+.vscode/
+.git/
+*.java
+*.txt
+out*.bmp
