@@ -28,19 +28,15 @@ def encode(bmp_in, message, bmp_out):
 
 def decode(bmp_in, txt_out):
     with open(bmp_in, "rb") as bmp_in:
-        for i in range(HEADSIZE): # skip header
-            bmp_in.read(1)
-        msg_done = False
+        bmp_in.read(HEADSIZE) # skip header
         with open(txt_out, "wb") as txt_out:
-            while msg_done != True:
-                c_bytes = bmp_in.read(8)
-                char = 0x00
-                for b in c_bytes:
-                    char = (char << 1) | (b & 0x01)
-                if char == 0x00:
-                    msg_done = True
-                    continue
-                txt_out.write(bytes([char]))
+            while char_bytes := bmp_in.read(8): # read in the next 8 bytes from BMP file
+                char = 0x00 # char byte = all bits off
+                for byte in char_bytes:
+                    char = (char << 1) | (byte & 0x01) # move all bits one pos to the left and add one bit to the right (a new least significant bit)
+                if char == 0x00: # Stop-byte is reached?
+                    break
+                txt_out.write(bytes([char])) # write out the char to the output text file
         
         
     
