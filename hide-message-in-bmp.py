@@ -1,9 +1,9 @@
 #!/usr/local/bin/python3
-import argparse
+import sys
 
 HEADSIZE = 120 # Header of BMP image should not be longer
 
-def encode(bmp_in, message, bmp_out):
+def encode(message, bmp_in, bmp_out):
     with open(bmp_in, "rb") as bmp_in: 
         with open(bmp_out, "wb") as bmp_out:
             with open(message, "rb") as message:
@@ -31,17 +31,22 @@ def decode(bmp_in, txt_out):
                     break
                 txt_out.write(bytes([char])) # write out the char to the output text file
         
-        
     
+def run():
+    try:
+        if len(sys.argv) < 4:
+            sys.exit(f"usage 1:  {sys.argv[0]} encode <secret-message-filename> <image-filename> <output-filename>\nusage 2:  {sys.argv[0]} decode <input-image-filename> <output-message-filename> ")
+        elif len(sys.argv) < 5 and sys.argv[1].lower() == "encode":
+            sys.exit(f"usage :   {sys.argv[0]} encode <secret-message-filename> <image-filename> <output-filename>")
+        elif sys.argv[1].lower() == "encode":
+            encode(sys.argv[2], sys.argv[3], sys.argv[4])
+        elif sys.argv[1].lower() == "decode":
+            decode(sys.argv[2], sys.argv[3])
+    except IOError as err:
+        sys.exit(f"I/O ERROR: Please check the filenames: {err}")
+    except Exception as err:
+        sys.exit(f"Something went wrong: {err}")
 
 
-
-encode("picture1.bmp", "message.txt", "out0.bmp")
-decode("out0.bmp", "out.txt")
- 
-
-
-
-
-
-exit(0)
+# Start
+run()
