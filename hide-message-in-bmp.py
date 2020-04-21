@@ -13,9 +13,8 @@ def encode(message, bmp_in, bmp_out):
                         c = bmp_in.read(1)[0] & 0xFE
                         c = (c | ((mb[0] >> bit) & 0x01))
                         bmp_out.write(bytes([c]))
-                for i in range(7,-1,-1):
-                    c = bmp_in.read(1)[0] & 0xFE
-                    bmp_out.write(bytes([c]))
+                for byte in bmp_in.read(8):
+                    bmp_out.write(bytes([byte & 0xFE])) # set the LSB to 0 for 8 bytes after the message = the stop-byte
                 bmp_out.write(bmp_in.read())
             
              
