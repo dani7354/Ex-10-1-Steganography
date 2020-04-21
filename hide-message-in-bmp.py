@@ -12,11 +12,11 @@ def encode(txt_in, bmp_in, bmp_out):
                 while msg_byte := txt_in.read(1):
                     for bit in range(7,-1,-1): # split the msg char bits as insert to last bit of 8 pixel bytes
                         bmp_byte = bmp_in.read(1)[0] & 0xFE # read in bmp byte and clear last bit 
-                        bmp_byte = (bmp_byte | ((msg_byte[0] >> bit) & 0x01))
+                        bmp_byte = (bmp_byte | ((msg_byte[0] >> bit) & 0x01)) # insert msg bit to last bit in bmp byte
                         bmp_out.write(bytes([bmp_byte]))
                 for byte in bmp_in.read(8): # set the LSB to 0 for 8 bytes after the message = the stop-byte
                     bmp_out.write(bytes([byte & 0xFE])) 
-                bmp_out.write(bmp_in.read()) # write out the rest of the input bmp file.
+                bmp_out.write(bmp_in.read()) # write out the rest of the input bmp file
             
              
 def decode(bmp_in, txt_out):
